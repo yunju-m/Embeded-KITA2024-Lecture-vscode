@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/table.css" />
+    <title>Table 실습</title>
+</head>
+
+<body>
+    <table>
+        <colgroup>
+            <col width="10%" />
+            <col width="15%" />
+            <col width="25%" />
+            <col width="25%" />
+            <col width="25%" />
+        </colgroup>
+        <caption>년도별 매출현황</caption>
+        <thead>
+            <tr>
+                <th>구분</th>
+                <th>위치</th>
+                <th>2022년</th>
+                <th>2023년</th>
+                <th>2024년</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1공장</td>
+                <td rowspan="2">대구</td>
+                <td>100</td>
+                <td>90</td>
+                <td>120</td>
+            </tr>
+            <tr>
+                <td>2공장</td>
+                <td>170</td>
+                <td>50</td>
+                <td>130</td>
+            </tr>
+            <tr>
+                <td>3공장</td>
+                <td>울산</td>
+                <td>120</td>
+                <td>70</td>
+                <td>110</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">합계</td>
+                <td>390</td>
+                <td>210</td>
+                <td>360</td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+
+</html>

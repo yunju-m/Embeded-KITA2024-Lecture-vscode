@@ -1,0 +1,26 @@
+table {
+    width: 500px;
+}
+
+table,
+td,
+th {
+    border: 1px solid gray;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+thead,
+tfoot {
+    background-color: black;
+    color: white;
+}
+
+td {
+    padding-right: 5px;
+    text-align: right;
+}
+
+caption {
+    font-size: 30px;
+}
