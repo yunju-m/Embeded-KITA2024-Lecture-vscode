@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Div 실습</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #header {
+            background-color: lightgoldenrodyellow;
+        }
+
+        #left,
+        #content {
+            height: 300px;
+            display: inline-block;
+        }
+
+        #left {
+            width: 200px;
+            background-color: #bdf3f7d0;
+        }
+
+        #content {
+            width: 600px;
+            background-color: rgb(178, 240, 178);
+        }
+
+        #footer {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            헤더
+        </div>
+        <div id="body">
+            <div id="left">
+                좌메뉴
+            </div>
+            <div id="content">
+                컨텐츠
+            </div>
+        </div>
+        <div id="footer">
+            푸터
+        </div>
+    </div>
+</body>
+
+</html>
