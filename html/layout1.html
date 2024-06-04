@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>layout1</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .cls {
+            width: 100px;
+            height: 100px;
+            display: inline;
+        }
+
+        #wrapper {
+            position: relative;
+            top: 50px;
+            left: 50px;
+        }
+
+        #div1 {
+            background-color: lightyellow;
+            float: left;
+        }
+
+        #div2 {
+            background-color: lightcoral;
+            float: left;
+        }
+
+        #div3 {
+            background-color: lightcyan;
+            float: left;
+            clear: both;
+        }
+
+        #div4 {
+            background-color: lightgreen;
+            float: left;
+        }
+
+        #div5 {
+            background-color: lightpink;
+            float: left;
+            clear: both;
+            position: relative;
+            bottom: 150px;
+            left: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="div1" class="cls">
+            div1
+        </div>
+        <div id="div2" class="cls">
+            div2
+        </div>
+        <div id="div3" class="cls">
+            div3
+        </div>
+        <div id="div4" class="cls">
+            div4
+        </div>
+        <div id="div5" class="cls">
+            div5
+        </div>
+    </div>
+</body>
+
+</html>
