@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form 실습</title>
+    <style>
+        input {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="formproc.jsp" method="post">
+        <input type="text" name="txt" />
+        <input type="password" name="pwd" />
+        <input type="tel" name="tel" pattern="\d{3}-\d{4}-\d{4}" placeholder="000-0000-0000" />
+        <input type="email" name="email" />
+        <input type="date" name="date" />
+        <input type="time" name="time" />
+        <input type="datetime-local" name="datetimelocal" />
+        <input type="number" name="number" min="0" max="50" step="5" />
+        <input type="range" name="range" min="0" max="100" />
+        <input type="button" name="button" value="input버튼" />
+        <button name="button2">일반버튼</button>
+        <input type="file" name="file" />
+        <input type="color" id="color" name="color">
+        <input type="hidden" name="hdn" value="123" />
+
+        초딩 <input type="radio" name="rdo" value="es" />
+        중딩 <input type="radio" name="rdo" value="ms" />
+        고딩 <input type="radio" name="rdo" value="hs" />
+
+        여행 <input type="checkbox" name="hobbybox1" />
+        요리 <input type="checkbox" name="hobbybox2" />
+        독서 <input type="checkbox" name="hobbybox3" />
+
+        <select name="slt">
+            <optgroup label="과일">
+                <option value="apple">사과</option>
+                <option value="banana">바나나</option>
+            </optgroup>
+            <optgroup label="채소">
+                <option value="carrot">당근</option>
+                <option value="onion">양파</option>
+            </optgroup>
+        </select>
+
+        <textarea name="ta" rows="10" cols="20" placeholder="입력하세요!"></textarea>
+
+        <input type="submit" value="전송" />
+        <input type="reset" value="초기화" />
+    </form>
+</body>
+
+</html>
