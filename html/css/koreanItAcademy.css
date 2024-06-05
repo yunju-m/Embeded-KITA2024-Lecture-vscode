@@ -38,6 +38,7 @@ ul li {
     display: inline-block;
     margin: 0;
     border: 1px solid #ccc;
+    background-color: white;
 }
 
 .content-container {
