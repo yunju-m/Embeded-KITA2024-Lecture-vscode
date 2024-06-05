@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>localstorage 실습</title>
+</head>
+
+<body>
+    <script>
+        if (localStorage) {
+            localStorage.setItem("name", "홍길동");
+            localStorage.setItem("age", "20");
+
+            console.log(localStorage.getItem("name"));
+            console.log(localStorage.getItem("age"));
+
+            localStorage.removeItem("age");
+
+            console.log(localStorage.getItem("name"));
+            console.log(localStorage.getItem("age"));
+        } else {
+            console.log("로컬스토리지를 지원하지 않습니다!");
+        }
+    </script>
+</body>
+
+</html>
