@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE 실습</title>
+</head>
+
+<body>
+    <h3><span id="sp"></span></h3>
+    <script>
+        if (EventSource) {
+            let es = new EventSource("http://localhost:8888/ssetest/sse.jsp");
+            es.onopen = function (event) {
+                console.log("서버에 연결 완료!");
+            }
+            es.onerror = function (event) {
+                //console.log("에러 발생! " + event.message);
+            }
+            es.onmessage = function (event) {
+                console.log("서버에서 받은 메세지 : " + event.data);
+                document.getElementById("sp").innerHTML = event.data;
+            }
+        } else {
+            console.log("이 브라우저는 SSE를 지원하지 않습니다.");
+        }
+    </script>
+</body>
+
+</html>
