@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web worker 실습</title>
+    <script>
+        let worker;
+        function startWorker() {
+            if (Worker) {
+                if (!worker) {
+                    worker = new Worker("js/timeworker.js");
+                }
+                worker.onmessage = function (event) {
+                    document.getElementById("result").innerHTML = event.data;
+                }
+            } else {
+                document.getElementById("result").innerHTML = "브라우저가 Web Worker 지원하지 않습니다.";
+            }
+        }
+
+        function stopWorker() {
+            worker.terminate();
+            worker = undefined;
+        }
+    </script>
+</head>
+
+<body>
+    <p id="result"></p>
+    <button onclick="startWorker()">Start</button>
+    <button onclick="stopWorker()">Stop</button>
+</body>
+
+</html>
