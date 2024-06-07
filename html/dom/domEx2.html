@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dom Ex2</title>
+    <script src="js/domEx2.js"></script>
+</head>
+
+<body>
+    <h3>사칙연산</h3>
+    <div id="wrapper">
+        <p>
+            <input id="num1" type="number" />
+            <input id="num2" type="number" />
+            <label> = </label>
+            <span id="result"></span>
+        </p>
+    </div>
+    <input id="addBtn" type="button" value="+" onclick="calculate('+')" />
+    <input id="subBtn" type="button" value="-" onclick="calculate('-')" />
+    <input id="mulBtn" type="button" value="*" onclick="calculate('*')" />
+    <input id="divBtn" type="button" value="/" onclick="calculate('/')" />
+</body>
+
+</html>

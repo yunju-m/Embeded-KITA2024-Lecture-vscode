@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dom Ex3</title>
+    <script src="js/domEx3.js"></script>
+</head>
+
+<body>
+    <h3>사각형&원 그리기</h3>
+    <div>
+        <svg id="svg" width="640" height="480" style="border:1px solid #d3d3d3;"></svg>
+        <p>[사각형 그리기]</p>
+        <label for="rx">X</label>
+        <input id="rx" type="txt" />
+        <label for="ry">Y</label>
+        <input id="ry" type="txt" />
+        <label for="rw">가로</label>
+        <input id="rw" type="txt" />
+        <label for="rh">세로</label>
+        <input id="rh" type="txt" />
+        <input id="rectBtn" type="button" value="■ 버튼" onclick="drawsquare()" />
+        <input id="rectcolor" type="color" />
+
+        <p>[원 그리기]</p>
+        <label for="cx">X</label>
+        <input id="cx" type="txt" />
+        <label for="cy">Y</label>
+        <input id="cy" type="txt" />
+        <label for="r">반지름</label>
+        <input id="r" type="txt" />
+        <input id="circleBtn" type="button" value="● 버튼" onclick="drawcircle()" />
+        <input id="circlecolor" type="color" />
+    </div>
+</body>
+
+</html>
