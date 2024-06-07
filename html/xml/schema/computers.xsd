@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="localhost" targetNamespace="localhost"
+    xmlns="localhost">
+<xs:element name="computers">
+    <xs:element name="computer">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="cpu" type="xs:String" />
+                <xs:element name="memory" type="xs:String" />
+                <xs:element name="gpu" type="xs:String" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:element>
