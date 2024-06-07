@@ -1,0 +1,8 @@
+<!DOCTYPE computers
+[
+<!ELEMENT computers (computer)>
+<!ELEMENT computer (cpu, memory, gpu)>
+<!ELEMENT cpu (#PCDATA)>
+<!ELEMENT memory (#PCDATA)>
+<!ELEMENT gpu (#PCDATA)>
+]>

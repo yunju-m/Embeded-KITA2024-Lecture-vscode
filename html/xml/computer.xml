@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE computers SYSTEM "dtd/computers.dtd">
+<?xml-stylesheet type="text/css" href="css/computer.css"?>
+<computers>
+    <computer>
+        <cpu>I9</cpu>
+        <memory>16G</memory>
+        <gpu>1660</gpu>
+    </computer>
+    <computer>
+        <cpu>I7</cpu>
+        <memory>8G</memory>
+        <gpu>1060</gpu>
+    </computer>
+</computers>
