@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jquery 7</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script defer src="js/jquery7.js"></script>
+    <style>
+        #content {
+            display: block;
+            border: 1px solid #333;
+        }
+
+        .class1 {
+            border: 1px solid #333;
+            font-size: 20px;
+        }
+
+        .class2 {
+            border: 8px solid orange;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <p>
+            <a id="a1">네이버</a>
+        </p>
+        <p>
+            <span id="content">content</span>
+        </p>
+        <p>
+        <ul>
+            <li>사과</li>
+            <li>감</li>
+            <li>배</li>
+        </ul>
+        <input id="empty" type="button" value="empty" />&nbsp;
+        <input id="remove" type="button" value="remove" />
+        </p>
+
+        <p>
+            <input id="txt2" type="text" /><br />
+            <input id="btnc1add" type="button" value="class1 적용" /> <br />
+            <input id="btnc1remove" type="button" value="class1 제거" /> <br />
+            <input id="btnc1toggle" type="button" value="class1 토글" /> <br />
+            <input id="btnc2add" type="button" value="class2 적용" /> <br />
+            <input id="btnc2remove" type="button" value="class2 제거" /> <br />
+            <input id="btnc2toggle" type="button" value="class2 토글" /> <br />
+        </p>
+    </div>
+</body>
+
+</html>
