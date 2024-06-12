@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="js/jquery-3.7.1.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("#btn").click(function () {
+                $("#result").html("Hello JQuery~!");
+            });
+        });
+    </script>
+    <title>jquery 1</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <p>
+            <input id="btn" type="button" value="클릭" />
+        </p>
+        <p>
+            <span id="result"></span>
+        </p>
+    </div>
+</body>
+
+</html>
