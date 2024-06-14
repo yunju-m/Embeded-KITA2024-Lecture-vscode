@@ -4,19 +4,22 @@ body {
 }
 
 .container {
-    width: 100%;
+    width: 500px !important;
     height: 100vh;
-    padding: 10%;
+    padding: 35px;
+}
+
+.border-container {
+    height: 100%;
+    border: solid black;
+    padding: 2%;
 }
 
 .title-container {
-    height: 10%;
     text-align: center;
 }
 
-h1 {
-    margin: 0;
-    padding: 10px;
+h2 {
     font-weight: bold !important;
 }
 
@@ -35,7 +38,7 @@ h1 {
 .inputBtn-container {
     width: 20%;
     text-align: center;
-    padding-top: 150px;
+    padding-top: 110px;
 }
 
 #submitBtn {
@@ -76,4 +79,12 @@ ul li {
 button {
     background-color: lightcoral;
     border: none;
+}
+
+/* 모바일 뷰(Mobile) */
+@media screen and (max-width: 767px) {
+    * {
+        width: 600px;
+        height: 100%x;
+    }
 }

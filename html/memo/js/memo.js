@@ -8,26 +8,27 @@ jQuery 메모장 구현
 */
 
 $(function () {
-    // const memoArr = [];
-    // const memoObj = { "subject": "제목", "content": "내용", "regdate": "등록일시" };
-    // if (localStorage) {
-    //     localStorage.setItem("memo1", JSON.stringify(memoObj));
-    // }
     printMemoList();
-    $("#submitBtn").click(function () {
+
+    $("#submitBtn").on("click", function () {
         const memoObj = {
+            id: Date.now(),
             title: $("#title").val(),
             content: $("#content").val(),
             regdate: Date.now()
         };
         addMemo(memoObj);
+        clearInputs();
     });
 
-    $("#memolist ul li").click(function () {
-        const key = $(this).attr("id");
-        const keysub = $(this).attr("id").substr(4);
-        // removeMemo(key);
-        removeMemo(keysub);
+    $("#memolist").on("click", ".btn-danger", function () {
+        const key = $(this).closest('li').attr('id').substr(4);
+        removeMemo(key);
+    })
+
+    $("#memolist").on("click", "ul li", function () {
+        const key = $(this).attr('id').substr(4);
+        getTopMemo(key);
     });
 });
 
@@ -48,28 +49,34 @@ function printMemoList() {
     const memoList = getMemoList();
     const memoListLeng = memoList.length;
     for (let i = 0; i < memoListLeng; i++) {
-        $("#memolist ul").append(`<li id='memo${i}'>
+        $("#memolist ul").append(`<li id='memo${memoList[i].id}'>
         ${getDateStr(memoList[i].regdate)}</br>
         ${memoList[i].title}
-        <button id=delBtn class="btn btn-danger">삭제</button></li>`);
+        <button class="btn btn-danger">삭제</button></li>`);
     }
 }
 
 // 메모의 등록 시간 출력형식 지정함수
 function getDateStr(time) {
-    return moment(time).format("YYYY-MM-DD HH시 mm분");
+    return moment(time).format("YYYY년 MM월 DD일");
 }
 
 // localStorage의 메모리스트에 메모를 추가하는 함수
 function addMemo(memoObj) {
-    const memoListArr = getMemoList();
-    memoListArr[memoListArr.length] = memoObj;
-    localStorage.setItem("memoList", JSON.stringify(memoListArr));
+    const memoList = getMemoList();
+    memoList[memoList.length] = memoObj;
+    localStorage.setItem("memoList", JSON.stringify(memoList));
     printMemoList();
 }
 
+// 새로운 제목, 내용 작성 후 초기화 함수
+function clearInputs() {
+    $("#title").val('');
+    $("#content").val('');
+}
+
 // localStorage의 메모리스트에서 메모를 삭제하는 함수
-function removeMemo(delkey) {
+function removeMemo(id) {
     // const liList = $("ul li");
     // const liListLeng = $("ul li").length;
     // for (let i = 0; i < liListLeng; i++) {
@@ -77,13 +84,25 @@ function removeMemo(delkey) {
     //         liList[i].remove();
     //     }
     // }
-    const memoList = localStorage.getItem("memoList");
-    const memoListObj = JSON.parse(memoList);
-    console.log(memoListObj.filter((memo) => memo = 1));
-
+    const memoList = getMemoList();
+    const leftData = memoList.filter((memo) => memo.id != id);
+    localStorage.setItem("memoList", JSON.stringify(leftData));
+    printMemoList();
+}
+// 최신 메모를 하나를 가져오는 함수
+function getTopMemo(id) {
+    const memoList = getMemoList();
+    const selectData = memoList.filter((memo) => memo.id == id);
+    printTopMemo(selectData);
 }
 
-// 최신 메모를 하나를 가져오는 함수
-function getTopMemo() {
-
+// 최신 메모 출력하는 함수
+function printTopMemo(memo) {
+    $(".recent-container").empty();
+    if (memo.length != 0) {
+        const regdate = `<h1>${getDateStr(memo[0].regdate)}</h1><br />`;
+        const title = `<p>${memo[0].title}</p><br />`;
+        const content = `<p>${memo[0].content}</p>`
+        $(".recent-container").append(regdate + title + content);
+    }
 }
