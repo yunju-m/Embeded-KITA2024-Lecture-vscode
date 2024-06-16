@@ -21,7 +21,7 @@ $(function () {
         clearInputs();
     });
 
-    $("#memolist").on("click", ".btn-danger", function () {
+    $("#memolist").on("click", ".delBtn-container button", function () {
         const key = $(this).closest('li').attr('id').substr(4);
         removeMemo(key);
     })
@@ -51,9 +51,23 @@ function printMemoList() {
     for (let i = 0; i < memoListLeng; i++) {
         $("#memolist ul").append(`<li id='memo${memoList[i].id}'>
         ${getDateStr(memoList[i].regdate)}</br>
-        ${memoList[i].title}
-        <button class="btn btn-danger">삭제</button></li>`);
+        <div id =\"regtitle\">${memoList[i].title}</div></li>`);
+        $("#memolist ul").append(`<li id='memo${memoList[i].id}'>${printDelBtn()}</li> `);
     }
+}
+
+function printDelBtn() {
+    return `<div class= "delBtn-container">
+        <button id=delBtn>
+            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="currentColor" class="w-5 h-5">
+                    <path fill-rule="evenodd"
+                        d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+                        clip-rule="evenodd">
+                    </path>
+                </svg>
+        </button></div > `;
 }
 
 // 메모의 등록 시간 출력형식 지정함수
@@ -98,11 +112,10 @@ function getTopMemo(id) {
 
 // 최신 메모 출력하는 함수
 function printTopMemo(memo) {
-    $(".recent-container").empty();
+    $(".sel-container").empty();
     if (memo.length != 0) {
-        const regdate = `<h1>${getDateStr(memo[0].regdate)}</h1><br />`;
-        const title = `<p>${memo[0].title}</p><br />`;
-        const content = `<p>${memo[0].content}</p>`
-        $(".recent-container").append(regdate + title + content);
+        $(".sel-container").append(`<div id=\"selregdate\">${getDateStr(memo[0].regdate)}</div>`);
+        $(".sel-container").append(`<div id=\"seltitle\">${(memo[0].title)}</div>`);
+        $(".sel-container").append(`<div id=\"selcontent\">${(memo[0].content)}</div>`);
     }
 }

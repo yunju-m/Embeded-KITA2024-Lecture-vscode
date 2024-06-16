@@ -1,90 +1,110 @@
 body {
+    height: 100vh;
     margin: 0;
     padding: 0;
 }
 
-.container {
-    width: 500px !important;
-    height: 100vh;
-    padding: 35px;
+.layout-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    justify-content: center;
 }
 
-.border-container {
-    height: 100%;
+.memo-container {
+    width: 600px;
     border: solid black;
-    padding: 2%;
+    background-color: ivory;
+    padding: 10px;
 }
 
 .title-container {
-    text-align: center;
-}
-
-h2 {
-    font-weight: bold !important;
-}
-
-.regist-container {
+    height: 10%;
     display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 30%;
-}
-
-.input-container {
-    display: grid;
-    width: 80%;
-}
-
-.inputBtn-container {
-    width: 20%;
+    flex-direction: column;
     text-align: center;
-    padding-top: 110px;
+    justify-content: center;
 }
 
-#submitBtn {
-    width: 80px;
-    height: 100%;
+.title-container p {
+    font-family: comic sans ms
+}
+
+.reg-container {
+    height: 20%;
+    margin-left: 10px;
 }
 
 .content-container {
-    display: flex;
-    flex-direction: row;
-    height: 50%;
-    padding: 2%;
+    height: 70%;
+    padding: 10px;
 }
 
-.contentlist-container {
-    width: 40%;
-    background-color: aliceblue;
+.button-container {
+    text-align: -webkit-center;
+    margin-bottom: 0;
+    margin-top: 60px;
 }
 
-#memolist {
-    overflow-y: scroll;
+.memolist-container {
+    position: relative;
+    width: 100%;
+    border: solid lightgray;
+    border-width: 1px;
+    overflow-y: auto;
 }
 
-.recent-container {
-    width: 60%;
-    background-color: lightgoldenrodyellow;
+.memolist-container h1 {
+    font-size: large;
+    font-weight: bold;
 }
 
 ul {
-    margin: 0 !important;
-    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    line-height: 1.25;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-left: 1rem !important;
+    padding-right: 0.25rem;
 }
 
-ul li {
-    list-style: none;
+#memolist ul li {
+    width: 100%;
+    color: lightgray;
+    font-size: 10px;
 }
 
-button {
-    background-color: lightcoral;
-    border: none;
+#regtitle {
+    color: black;
+    font-size: large;
 }
 
-/* 모바일 뷰(Mobile) */
-@media screen and (max-width: 767px) {
-    * {
-        width: 600px;
-        height: 100%x;
-    }
+.delBtn-container {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.sel-container {
+    margin-left: 10px;
+    border: solid lightgray;
+    border-width: 1px;
+    padding: 10px;
+}
+
+#delBtn {
+    position: relative;
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+#selregdate {
+    text-align: end;
+}
+
+#seltitle {
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
 }
