@@ -16,6 +16,7 @@ $(function () {
             );
             const newPerson = new Person($("#sname").val(), newScore);
             personArr = getPersonArr(newPerson);
+            getRankArr(personArr);
             printScore(personArr, getSumArr(personArr));
         }
     });
@@ -23,6 +24,7 @@ $(function () {
 
 function init() {
     personArr = getInitPersonArr();
+    getRankArr(personArr);
     printScore(personArr, getSumArr(personArr));
 }
 
@@ -99,4 +101,17 @@ function printScore(personArr, sumArr) {
             <td>&nbsp;</td>
         </tr>
     `);
+}
+// 석차 판별 함수
+function getRankArr(personArr) {
+    personArr.sort((a, b) => b.savg - a.savg);
+    const personArrLeng = personArr.length;
+
+    for (let i = 0; i < personArrLeng; i++) {
+        if (i > 0 && personArr[i].savg === personArr[i - 1].savg) {
+            personArr[i].srank = personArr[i - 1].srank;
+        } else {
+            personArr[i].srank = i + 1;
+        }
+    }
 }
