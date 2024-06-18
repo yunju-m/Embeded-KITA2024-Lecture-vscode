@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성적처리프로그램</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="js/person.js"></script>
+    <script src="js/score.js"></script>
+    <script src="js/scoreProc.js"></script>
+    <link rel="stylesheet" href="css/score.css" />
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="scoreTable">
+            <h1>&#128218; 성적처리프로그램</h1>
+            <div id="inputDiv">
+                <p>
+                    이름:&nbsp;<input id="sname" type="text" />
+                    국어&nbsp;<input id="skor" type="text" />&nbsp;
+                    영어&nbsp;<input id="seng" type="text" />&nbsp;
+                    수학&nbsp;<input id="smath" type="text" />
+                    <input id="inputBtn" type="button" value="입력" />
+                </p>
+            </div>
+            <div id="dataDiv">
+                <table>
+                    <colgroup>
+                        <col width="10%" />
+                        <col width="30%" />
+                        <col width="10%" />
+                        <col width="10%" />
+                        <col width="10%" />
+                        <col width="10%" />
+                        <col width="10%" />
+                        <col width="10%" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>이름</th>
+                            <th>국어</th>
+                            <th>영어</th>
+                            <th>수학</th>
+                            <th>총점</th>
+                            <th>평균</th>
+                            <th>석차</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
