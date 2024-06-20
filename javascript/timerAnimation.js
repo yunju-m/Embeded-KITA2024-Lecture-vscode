@@ -6,51 +6,36 @@ let dogSpeed = 1;
 $(function () {
     $("#accel").val("속도: " + dogSpeed);
 
-    $("#moveToUp").on('click', function () {
-        pause();
-        timer = setInterval(moveToTop, 5);
-    });
-
-    $("#moveToDown").on('click', function () {
-        pause();
-        timer = setInterval(moveToBottom, 5);
-    });
-
-    $("#pause").on('click', function () {
-        pause();
-    });
-
-    $("#moveToLeft").on('click', function () {
-        pause();
-        timer = setInterval(moveToLeft, 5);
-    });
-
-    $("#moveToRight").on('click', function () {
-        pause();
-        timer = setInterval(moveToRight, 5);
-    });
+    makeTimer("moveToTop", move("top"));
+    makeTimer("moveToBottom", move("bottom"));
+    makeTimer("moveToLeft", move("left"));
+    makeTimer("moveToRight", move("right"));
 
     $("body").on("keydown", function (event) {
-        if (event.keyCode == 37) moveToLeft();
-        if (event.keyCode == 38) moveToTop();
-        if (event.keyCode == 39) moveToRight();
-        if (event.keyCode == 40) moveToBottom();
+        if (event.keyCode == 37) move("left")();
+        if (event.keyCode == 38) move("top")();
+        if (event.keyCode == 39) move("right")();
+        if (event.keyCode == 40) move("bottom")();
         if (event.keyCode == 37 && event.keyCode == 38) {
-            moveToLeft();
-            moveToTop();
+            move("left")();
+            move("top")();
         }
         if (event.keyCode == 37 && event.keyCode == 40) {
-            moveToLeft();
-            moveToBottom();
+            move("left")();
+            move("bottom")();
         }
         if (event.keyCode == 39 && event.keyCode == 38) {
-            moveToRight();
-            moveToTop();
+            move("right")();
+            move("top")();
         }
         if (event.keyCode == 39 && event.keyCode == 40) {
-            moveToRight();
-            moveToBottom();
+            move("right")();
+            move("bottom")();
         }
+    });
+
+    $("#pause").on("click", function () {
+        pause();
     });
 
     $("#accel").on('click', function () {
@@ -59,39 +44,60 @@ $(function () {
     });
 });
 
+// 버튼별 타이밍 함수 지정
+const makeTimer = function (id, func) {
+    $(`#${id}`).on('click', function () {
+        pause();
+        timer = setInterval(func, 5);
+    });
+}
+
 // 이미지 정지 기능 구현 함수
 const pause = function () {
     clearInterval(timer);
-};
-
-// 이미지 위쪽 이동 기능 구현 함수
-const moveToTop = function () {
-    if (dogTop >= 10) {
-        dogTop -= dogSpeed;
-        $("#dog").css("top", `${dogTop}px`);
-    }
 }
 
-// 이미지 아래쪽 이동 기능 구현 함수
-const moveToBottom = function () {
-    if (dogTop <= 540) {
-        dogTop += dogSpeed;
-        $("#dog").css("top", `${dogTop}px`);
-    }
-}
+// 이미지(상,하,좌,우) 이동 기능 구현 함수
+const move = function (direction) {
+    const max = 540;
+    const min = 10;
+    let dogDir = null;
+    let displ = 0;
 
-// 이미지 왼쪽 이동 기능 구현 함수
-const moveToLeft = function () {
-    if (dogLeft >= 10) {
-        dogLeft -= dogSpeed;
-        $("#dog").css("left", `${dogLeft}px`);
+    switch (direction) {
+        case "top":
+            dogDir = dogTop;
+            displ = min;
+            break;
+        case "bottom":
+            dogDir = dogTop;
+            displ = max;
+            break;
+        case "left":
+            dogDir = dogLeft;
+            displ = min;
+            break;
+        case "right":
+            dogDir = dogLeft;
+            displ = max;
+            break;
     }
-}
 
-// 이미지 오른쪽 이동 기능 구현 함수
-const moveToRight = function () {
-    if (dogLeft <= 540) {
-        dogLeft += dogSpeed;
-        $("#dog").css("left", `${dogLeft}px`);
+    if (direction == "top" || direction == "left") {
+        return function () {
+            if (dogDir >= displ) {
+                dogDir -= dogSpeed;
+                $("#dog").css(direction, dogDir + "px");
+            }
+        };
+    } else {
+        return function () {
+            console.log(direction == "bottom");
+            direction == "bottom" ? direction = "top" : direction = "left";
+            if (dogDir <= displ) {
+                dogDir += dogSpeed;
+                $("#dog").css(direction, dogDir + "px");
+            }
+        };
     }
 }
