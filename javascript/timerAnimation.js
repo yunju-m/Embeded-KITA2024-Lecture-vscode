@@ -61,43 +61,40 @@ const pause = function () {
 const move = function (direction) {
     const max = 540;
     const min = 10;
-    let dogDir = null;
-    let displ = 0;
 
     switch (direction) {
-        case "top":
-            dogDir = dogTop;
-            displ = min;
-            break;
-        case "bottom":
-            dogDir = dogTop;
-            displ = max;
-            break;
-        case "left":
-            dogDir = dogLeft;
-            displ = min;
-            break;
-        case "right":
-            dogDir = dogLeft;
-            displ = max;
-            break;
+        case "top": {
+            return function () {
+                if (dogTop >= min) {
+                    dogTop -= dogSpeed;
+                    $("#dog").css("top", dogTop + "px");
+                }
+            };
+        }
+        case "bottom": {
+            return function () {
+                if (dogTop <= max) {
+                    dogTop += dogSpeed;
+                    $("#dog").css("top", dogTop + "px");
+                }
+            };
+        }
+        case "left": {
+            return function () {
+                if (dogLeft >= min) {
+                    dogLeft -= dogSpeed;
+                    $("#dog").css("left", dogLeft + "px");
+                }
+            };
+        }
+        case "right": {
+            return function () {
+                if (dogLeft <= max) {
+                    dogLeft += dogSpeed;
+                    $("#dog").css("left", dogLeft + "px");
+                }
+            };
+        }
     }
 
-    if (direction == "top" || direction == "left") {
-        return function () {
-            if (dogDir >= displ) {
-                dogDir -= dogSpeed;
-                $("#dog").css(direction, dogDir + "px");
-            }
-        };
-    } else {
-        return function () {
-            console.log(direction == "bottom");
-            direction == "bottom" ? direction = "top" : direction = "left";
-            if (dogDir <= displ) {
-                dogDir += dogSpeed;
-                $("#dog").css(direction, dogDir + "px");
-            }
-        };
-    }
 }
