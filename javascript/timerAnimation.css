@@ -1,0 +1,27 @@
+#box {
+    width: 600px;
+    height: 600px;
+    border: 1px solid #333;
+    position: relative;
+}
+
+img {
+    display: inline-block;
+    position: absolute;
+    top: 275px;
+    left: 290px;
+    width: 50px;
+    height: 50px;
+}
+
+.btn-group {
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+}
+
+input[type='button'] {
+    width: 150px;
+    height: 35px;
+}
