@@ -1,31 +1,126 @@
 body {
-    padding: 0;
+    background-color: #f0f2f5;
+    font-family: 'Noto Sans KR', sans-serif;
     margin: 0;
-    height: 100vh;
+    padding: 0;
 }
 
 .container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-items: center;
-    padding-top: 100px;
-    padding-bottom: 100px;
+    margin-top: 50px;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .container-border {
-    width: 100%;
-    height: 100%;
+    border: 1px solid #e9ecef;
     padding: 20px;
-    border: solid #333;
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 700;
+    color: #343a40;
+}
+
+h3 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: #495057;
 }
 
 .stockmanager-container {
     display: flex;
-    height: 100%;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.shop-container {
-    margin-right: 20px;
+.shop-container,
+.stock-container {
+    flex: 1;
+    min-width: 320px;
+}
+
+.regdateShop-container,
+.regdateStock-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+button {
+    flex: 1;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+button {
+    background-color: #000000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+button.edit-btn,
+button.delete-btn {
+    width: auto;
+    /* Allow button to size based on content */
+    padding: 5px 10px;
+    /* Adjust padding to fit content horizontally */
+    font-size: 0.875rem;
+    /* Adjust font size if needed */
+}
+
+button:hover {
+    background-color: #39393990;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+}
+
+th,
+td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+}
+
+.table tbody tr {
+    transition: background-color 0.3s;
+}
+
+@media (max-width: 768px) {
+
+    .regdateShop-container,
+    .regdateStock-container {
+        flex-direction: column;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    button {
+        width: 100%;
+    }
 }

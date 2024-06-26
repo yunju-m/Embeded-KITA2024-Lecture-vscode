@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     <script src="Shop.js"></script>
     <script src="Stock.js"></script>
     <script src="stockermanager.js"></script>
@@ -18,13 +19,13 @@
 <body>
     <div class="container">
         <div class="container-border">
-            <h1>재고관리 프로그램</h1>
+            <h1>재고관리 프로그램 &#128202;</h1>
             <div class="stockmanager-container">
                 <div class="shop-container">
                     <h3>매장</h3>
                     <div class="regdateShop-container">
                         <input id="shname" type="text" placeholder="매장명" />
-                        <input id="shtotst" type="number" placeholder="매장총재고수량" />
+                        <input id="shtotst" type="number" min="0" placeholder="매장총재고수량" />
                         <button id="regShopBtn">등록</button>
                     </div>
                     <div class="shopList-container">
@@ -47,15 +48,15 @@
                     <h3>재고</h3>
                     <div class="regdateStock-container">
                         <input id="stname" type="text" placeholder="재고제품명" />
-                        <input id="stamt" type="number" placeholder="재고수량" />
-                        <input id="stindate" type="text" placeholder="입고일시" />
+                        <input id="stamt" type="number" min="0" placeholder="재고수량" />
+                        <input id="stindate" type="date" placeholder="입고일시" />
                         <button id="regStockBtn">등록</button>
                     </div>
                     <div class="shopList-container">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col">번호</th>
+                                    <th scope="col">No</th>
                                     <th scope="col">제품명</th>
                                     <th scope="col">수량</th>
                                     <th scope="col">입고</th>
