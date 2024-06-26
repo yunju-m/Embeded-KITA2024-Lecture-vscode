@@ -1,0 +1,18 @@
+0626 JS 실습 : 재고관리 프로그램
+
+파일 : stockmanager.html, stockmanager.css, stockmanager.js, Shop.js, Stock.js
+
+기능 : 매장목록, 매장등록, 매장수정, 매장삭제, 재고목록, 재고등록, 재고수정, 재고삭제,
+        재고수량변경
+
+Shop (매장)   shno : 매장번호  shname : 매장명  shtotst : 매장총재고수량
+Stock (재고)  stno : 재고번호  stname : 재고제품명  stamt : 재고수량
+               stindate : 입고일시 (20204/06/26 15:00 형식)
+               strgdate : 재고등록일시 (20204/06/26 15:00 형식)
+
+구현사항
+1) 모든데이터는 클래스와 객체로 관리
+2) 모든 함수는 화살표함수 사용
+3) 모든 파라미터는 rest파라미터를 사용
+4) 데이터는 JSON형태로 localStorage에 저장
+5) 화면 임의 구성
