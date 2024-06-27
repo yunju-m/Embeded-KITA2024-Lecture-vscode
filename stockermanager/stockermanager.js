@@ -3,15 +3,23 @@ $(() => {
     printShopList();
     printStockList();
 
+    // 매장 등록 버튼 이벤트 리스너
     $("#regShopBtn").on('click', () => {
         regidateShop();
         initInputShop();
     });
 
-    $(".delBtn").on('click', (event) => {
+    // 매장 수정 버튼 이벤트 리스너
+    $(".editShopBtn").on('click', (event) => {
+        showEditShopAlert(event.target);
+    });
+
+    // 매장 삭제 버튼 이벤트 리스너
+    $(".delShopBtn").on('click', (event) => {
         removeShop(event.target.id);
     });
 
+    // 재고 등록 버튼 이벤트 리스너
     $("#regStockBtn").on('click', () => {
         regidateStock();
         initInputStock();
@@ -66,38 +74,88 @@ const printShopList = () => {
             <th scope="row">${shopList[i].shno}</th>
             <th scope="row">${shopList[i].shname}</th>
             <th scope="row">${shopList[i].shtotst}</th>
-            <th scope="row"><button id=regBtn${shopList[i].shno} class="regBtn">수정</button></th>
-            <th scope="row"><button id=delBtn${shopList[i].shno} class="delBtn">삭제</button></th>
+            <th scope="row"><button id=editShopBtn${shopList[i].shno} class="editShopBtn">수정</button></th>
+            <th scope="row"><button id=delShopBtn${shopList[i].shno} class="delShopBtn">삭제</button></th>
         </tr>
     `);
     }
     // empty 수행 후 리스너 삭제 => 재생성
-    $(".delBtn").on('click', (event) => {
+    $(".editShopBtn").on('click', (event) => {
+        showEditShopAlert(event.target);
+    });
+
+    $(".delShopBtn").on('click', (event) => {
         removeShop(event.target.id);
     });
+
 }
 
 // 매장 입력칸 초기화
 const initInputShop = () => {
     $("#shname").val('');
-    $("#shtotst").val('');
 }
 
 // 매장 등록
 const regidateShop = () => {
     const shopList = getShopList();
-    shopList.push(new Shop(getNextShopSeq(), $("#shname").val(), $("#shtotst").val()));
+    shopList.push(new Shop(getNextShopSeq(), $("#shname").val(), 0));
     localStorage.setItem("shopList", JSON.stringify(shopList));
     printShopList();
 };
 
+// 매장 수정 알림창
+const showEditShopAlert = (btn) => {
+    const recentTr = btn.closest('th').closest('tr');
+    const shname = $(recentTr.cells[1]).html();
+
+    (async () => {
+        const { value: newshname } = await Swal.fire({
+            title: "매장정보 수정",
+            input: "text",
+            inputLabel: `현재 매장명: ${shname}`,
+            inputPlaceholder: "매장명을 입력해주세요."
+        });
+        if (newshname) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "success",
+                title: "매장명이 변경되었습니다."
+            });
+            editShop(recentTr, newshname);
+        }
+    })()
+}
+// 매장 수정
+const editShop = (tr, shname) => {
+    $(tr.cells[1]).html(shname);
+    const trno = Number($(tr.cells[0]).html());
+    const shopList = getShopList();
+    const editShop = shopList.find((shop) => shop.shno === trno);
+    editShop.shname = shname;
+    localStorage.setItem("shopList", JSON.stringify(shopList));
+}
+
 // 매장 삭제
 const removeShop = (id) => {
     const shopList = getShopList();
-    const leftShopList = shopList.filter((shop) => shop.shno != parseInt(id.split('delBtn')[1]));
+    const btnshno = parseInt(id.split('delShopBtn')[1]);
+    const leftShopList = shopList.filter((shop) => shop.shno !== btnshno);
+    leftShopList.slice(btnshno - 1).forEach(shop => {
+        shop.shno -= 1;
+    })
     localStorage.setItem("shopList", JSON.stringify(leftShopList));
-    printShopList();
     getDelShopSeq();
+    printShopList();
 }
 
 // 재고 목록
@@ -140,13 +198,13 @@ const printStockList = () => {
             <th scope="row">${stockList[i].stamt}</th>
             <th scope="row">${stockList[i].stindate}</th>
             <th scope="row">${getDateStr(stockList[i].strgdate)}</th>
-            <th scope="row"><button id=regBtn${stockList[i].stno} class="regBtn">수정</button></th>
-            <th scope="row"><button id=delBtn${stockList[i].stno} class="delBtn">삭제</button></th>
+            <th scope="row"><button id=regStockBtn${stockList[i].stno} class="regStockBtn">수정</button></th>
+            <th scope="row"><button id=delStockBtn${stockList[i].stno} class="delStockBtn">삭제</button></th>
         </tr>
     `);
     }
     // empty 수행 후 리스너 삭제 => 재생성
-    $(".delBtn").on('click', (event) => {
+    $(".delStockBtn").on('click', (event) => {
         removeStock(event.target.id);
     });
 }
@@ -164,13 +222,23 @@ const initInputStock = () => {
 
 // 재고 수정
 const editStock = () => {
-
+    (async () => {
+        const { value: stock } = await Swal.fire({
+            title: "Input Stock Info",
+            input: "text",
+            inputLabel: "Your stock",
+            inputPlaceholder: "Enter stock info"
+        });
+        if (stock) {
+            Swal.fire(`Your stock: ${stock}`);
+        }
+    })()
 }
 
 // 재고 삭제
 const removeStock = (id) => {
     const stockList = getStockList();
-    const leftStockList = stockList.filter((stock) => stock.stno != parseInt(id.split('delBtn')[1]));
+    const leftStockList = stockList.filter((stock) => stock.stno != parseInt(id.split('delStockBtn')[1]));
     localStorage.setItem("stockList", JSON.stringify(leftStockList));
     printStockList();
     getDelStockSeq();

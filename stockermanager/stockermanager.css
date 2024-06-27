@@ -56,6 +56,10 @@ h3 {
     margin-bottom: 20px;
 }
 
+#regShopBtn {
+    max-width: 100px;
+}
+
 input[type="text"],
 input[type="number"],
 input[type="date"],
@@ -80,11 +84,8 @@ button {
 button.edit-btn,
 button.delete-btn {
     width: auto;
-    /* Allow button to size based on content */
     padding: 5px 10px;
-    /* Adjust padding to fit content horizontally */
     font-size: 0.875rem;
-    /* Adjust font size if needed */
 }
 
 button:hover {
@@ -115,6 +116,10 @@ td {
     .regdateShop-container,
     .regdateStock-container {
         flex-direction: column;
+    }
+
+    #regShopBtn {
+        max-width: 100%;
     }
 
     input[type="text"],
