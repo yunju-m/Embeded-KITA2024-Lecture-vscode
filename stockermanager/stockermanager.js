@@ -10,10 +10,14 @@ $(() => {
         initInputShop();
     });
 
+    // 매장 선택 셀렉트 이벤트 리스너
+    $('#shopSelect').on('change', function () {
+        printStockList(Number($(this).val()));
+    });
+
     // 재고 등록 버튼 이벤트 리스너
     $("#regStockBtn").on('click', () => {
-        console.log("재고등록");
-        regidateStock(shop.shno);
+        regidateStock(Number($("#shopSelect").val()));
         initInputStock();
     });
 
@@ -57,6 +61,8 @@ const getShopSeq = (seq) => {
 // 매장 목록 출력
 const printShopList = () => {
     $("#shoptable").empty();
+    $("#shopSelect").empty();
+    $("#shopSelect").append('<option selected>매장</option>');
     getShopList().forEach(shop => {
         $("#shoptable").append(`
         <tr>
@@ -69,7 +75,7 @@ const printShopList = () => {
         `);
 
         $("#shopSelect").append(`
-            <option id=${shop.shno}>${shop.shname}</option>
+            <option value=${shop.shno}>${shop.shname}</option>
         `);
 
         // 매장 수정 버튼 이벤트 리스너
@@ -79,10 +85,6 @@ const printShopList = () => {
         // 매장 삭제 버튼 이벤트 리스너
         $('#' + 'delShopBtn' + shop.shno).on('click', () => {
             showRemoveShopAlert(shop);
-        });
-        // 매장 선택 이벤트 리스너
-        $("#shoptable tr").on('click', (event) => {
-            changeShopBg(event.currentTarget);
         });
     });
 }
@@ -182,12 +184,6 @@ const removeShop = shno => {
     printShopList();
 }
 
-// 선택한 매장 tr 배경색 변경
-const changeShopBg = (tr) => {
-    $("#shoptable tr").css("background-color", "white");
-    $(tr).css("background-color", '#ededed');
-}
-
 // 재고 목록 리스트 반환
 const getStockList = () => {
     return JSON.parse(localStorage.getItem("stockList"));
@@ -197,12 +193,6 @@ const getStockList = () => {
 const setStockList = (stockList) => {
     localStorage.setItem("stockList", JSON.stringify(stockList));
 }
-
-// // 선택한 재고 목록
-// const getSelectStockList = () => {
-//     const stockList = JSON.parse(localStorage.getItem("stockList"));
-//     return stockList.filter((stock) => stock.shno === Number($(currentShop.cells[0]).html()));
-// }
 
 // 재고 번호 등록 및 반환
 const getStockSeq = (seq) => {
@@ -218,25 +208,26 @@ const printStockList = shno => {
     const stockList = getStockList().filter(stock => stock.shno === shno);
     stockList.forEach(stock => {
         $("#stocktable").append(`
-        <tr>
-            <th scope="row">${++index}</th>
-            <th scope="row">${stock.stname}</th>
-            <th scope="row">${stock.stamt}</th>
-            <th scope="row">${stock.stindate}</th>
-            <th scope="row">${getDateStr(stock.strgdate)}</th>
-            <th scope="row"><button id=editStockBtn${stock.stno} class="editStockBtn">수정</button></th>
-            <th scope="row"><button id=delStockBtn${stock.stno} class="delStockBtn">삭제</button></th>
-        </tr>
-    `);
-    });
+            <tr>
+                <th scope="row">${++index}</th>
+                <th scope="row">${stock.stname}</th>
+                <th scope="row">${stock.stamt}</th>
+                <th scope="row">${stock.stindate}</th>
+                <th scope="row">${getDateStr(stock.strgdate)}</th>
+                <th scope="row"><button id=editStockBtn${stock.stno} class="editStockBtn">수정</button></th>
+                <th scope="row"><button id=delStockBtn${stock.stno} class="delStockBtn">삭제</button></th>
+            </tr>
+        `);
 
-    // empty 수행 후 리스너 삭제 => 재생성
-    $(".editStockBtn").on('click', (event) => {
-        showEditStockAlert(event.target.closest('th').closest('tr'));
-    });
+        // 재고 수정 버튼 이벤트 리스너
+        $("#editStockBtn" + stock.stno).on('click', () => {
+            showEditStockAlert(stock);
+        });
 
-    $(".delStockBtn").on('click', (event) => {
-        removeStock(event.target.id);
+        // 재고 삭제 버튼 이벤트 리스너
+        $("#delStockBtn" + stock.stno).on('click', () => {
+            removeStock(stock.stno);
+        });
     });
 }
 
@@ -245,14 +236,31 @@ function getDateStr(time) {
     return moment(time).format("YYYY/MM/DD HH:mm");
 }
 
+// 매장총재고수량 변경
+const changeStockQuantity = shno => {
+    const stockList = getStockList().filter(stock => stock.shno === shno);
+    const sumstamt = stockList.reduce(function (acc, curr) {
+        return acc + curr.stamt;
+    }, 0);
+    const shopList = getShopList().map(shop => {
+        if (shop.shno === shno) {
+            shop.shtotst = sumstamt;
+            return shop;
+        } else {
+            return shop;
+        }
+    });
+    setShopList(shopList);
+    printShopList();
+}
+
 // 재고 등록
 const regidateStock = shno => {
     const stockList = getStockList();
     stockList.push(new Stock(getStockSeq(1), $("#stname").val(), Number($("#stamt").val()), $("#stindate").val(), shno));
-    console.log(stockList);
-    // setStockList(stockList);
-    // printStockList(shno);
-    // changeStockQuantity();
+    setStockList(stockList);
+    printStockList(shno);
+    changeStockQuantity(shno);
 }
 
 // 재고 입력칸 초기화
@@ -262,15 +270,13 @@ const initInputStock = () => {
 }
 
 // 재고 정보 수정 알림창
-const showEditStockAlert = (event) => {
-    const stname = $(event.cells[1]).html();
-    const stamt = $(event.cells[2]).html();
+const showEditStockAlert = (stock) => {
     (async () => {
         const { value: formValues } = await Swal.fire({
             title: "재고 정보 수정",
             html: `
-                <input id="editstname" type="text" class="swal2-input" placeholder=${stname}>
-                <input id="editstamt" type="number" min=0 class="swal2-input" placeholder=${stamt}>
+                <input id="editstname" type="text" class="swal2-input" placeholder=${stock.stname}>
+                <input id="editstamt" type="number" min=0 class="swal2-input" placeholder=${stock.stamt}>
                 <input id="editstindate" type="date" class="swal2-input">
             `,
             showCancelButton: true,
@@ -303,13 +309,13 @@ const showEditStockAlert = (event) => {
                 icon: "success",
                 title: "재고정보가 변경되었습니다."
             });
-            editStock(event, formValues);
+            editStock(stock, formValues);
         }
     })()
 }
 
 // 재고 수정
-const editStock = (event, formValues) => {
+const editStock = (stock, formValues) => {
     const trno = Number($(event.cells[5].childNodes)[0].id.split('Btn')[1]);
     const stockList = getStockList();
     const editStock = stockList.find((stock) => stock.stno === trno);
@@ -342,17 +348,5 @@ const removeStock = (id) => {
     changeStockQuantity();
     printStockList();
     getDelStockSeq();
-}
-
-// 재고 수량 변경
-const changeStockQuantity = () => {
-    const sumstamt = getSelectStockList().reduce(function (acc, curr) {
-        return acc + curr.stamt;
-    }, 0);
-    const shopList = getShopList();
-    const editShop = shopList.find((shop) => shop.shno === Number($(currentShop.cells[0]).html()));
-    editShop.shtotst = sumstamt;
-    localStorage.setItem("shopList", JSON.stringify(shopList));
-    printShopList();
 }
 
