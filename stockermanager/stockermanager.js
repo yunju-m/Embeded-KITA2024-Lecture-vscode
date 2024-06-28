@@ -10,6 +10,13 @@ $(() => {
         initInputShop();
     });
 
+    // 재고 등록 버튼 이벤트 리스너
+    $("#regStockBtn").on('click', () => {
+        console.log("재고등록");
+        regidateStock(shop.shno);
+        initInputStock();
+    });
+
 });
 
 // 매장, 재고 저장소 초기화
@@ -61,6 +68,10 @@ const printShopList = () => {
         </tr>
         `);
 
+        $("#shopSelect").append(`
+            <option id=${shop.shno}>${shop.shname}</option>
+        `);
+
         // 매장 수정 버튼 이벤트 리스너
         $('#' + 'editShopBtn' + shop.shno).on('click', () => {
             showEditShopAlert(shop);
@@ -72,12 +83,6 @@ const printShopList = () => {
         // 매장 선택 이벤트 리스너
         $("#shoptable tr").on('click', (event) => {
             changeShopBg(event.currentTarget);
-
-            // 재고 등록 버튼 이벤트 리스너
-            $("#regStockBtn").on('click', () => {
-                regidateStock(shop.shno);
-                initInputStock();
-            });
         });
     });
 }
@@ -153,7 +158,7 @@ const showRemoveShopAlert = shop => {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "확인",
-        calcelButtonText: "취소"
+        cancelButtonText: "취소"
     }).then((result) => {
         if (result.isConfirmed) {
             Swal.fire({

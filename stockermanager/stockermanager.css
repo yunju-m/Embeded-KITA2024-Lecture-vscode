@@ -48,6 +48,10 @@ h3 {
     min-width: 320px;
 }
 
+.stock-container {
+    flex-grow: 2;
+}
+
 .regdateShop-container,
 .regdateStock-container {
     display: flex;
@@ -60,6 +64,7 @@ h3 {
     max-width: 100px;
 }
 
+select,
 input[type="text"],
 input[type="number"],
 input[type="date"],
@@ -122,6 +127,7 @@ td {
         max-width: 100%;
     }
 
+    select,
     input[type="text"],
     input[type="number"],
     input[type="date"],
