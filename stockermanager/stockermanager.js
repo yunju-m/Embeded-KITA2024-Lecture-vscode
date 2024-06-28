@@ -10,22 +10,6 @@ $(() => {
         initInputShop();
     });
 
-    // 매장 수정 버튼 이벤트 리스너
-    $(".editShopBtn").on('click', (event) => {
-        showEditShopAlert(event.target);
-    });
-
-    // 매장 삭제 버튼 이벤트 리스너
-    $(".delShopBtn").on('click', (event) => {
-        removeShop(event.target.id);
-    });
-
-    // 재고 등록 버튼 이벤트 리스너
-    $("#regStockBtn").on('click', () => {
-        regidateStock(currentShop);
-        initInputStock();
-    });
-
 });
 
 // 매장, 재고 저장소 초기화
@@ -46,29 +30,27 @@ const initLocalStorage = () => {
     }
 };
 
-// 매장 목록
+// 매장 목록 리스트 반환
 const getShopList = () => {
     return JSON.parse(localStorage.getItem("shopList"));
 };
 
-// 매장 번호 등록
-const getNextShopSeq = () => {
-    const nextShopSeq = Number(localStorage.getItem("shopSeq")) + 1;
-    localStorage.setItem("shopSeq", nextShopSeq);
-    return nextShopSeq;
+// 매장 목록 리스트 설정
+const setShopList = (shopList) => {
+    localStorage.setItem("shopList", JSON.stringify(shopList));
 }
 
-// 매장 번호 감소
-const getDelShopSeq = () => {
-    const delShopSeq = Number(localStorage.getItem("shopSeq")) - 1;
-    localStorage.setItem("shopSeq", delShopSeq);
-    return delShopSeq;
+// 매장 번호 등록 및 반환
+const getShopSeq = (seq) => {
+    const shopSeq = Number(localStorage.getItem("shopSeq")) + seq;
+    localStorage.setItem("shopSeq", shopSeq);
+    return shopSeq;
 }
 
 // 매장 목록 출력
 const printShopList = () => {
     $("#shoptable").empty();
-    getShopList().forEach((shop) => {
+    getShopList().forEach(shop => {
         $("#shoptable").append(`
         <tr>
             <th scope="row">${shop.shno}</th>
@@ -77,57 +59,49 @@ const printShopList = () => {
             <th scope="row"><button id=editShopBtn${shop.shno} class="editShopBtn">수정</button></th>
             <th scope="row"><button id=delShopBtn${shop.shno} class="delShopBtn">삭제</button></th>
         </tr>
-    `);
-    });
+        `);
 
-    // empty 수행 후 리스너 삭제 => 재생성
-    $(".editShopBtn").on('click', (event) => {
-        showEditShopAlert(event.target);
-    });
+        // 매장 수정 버튼 이벤트 리스너
+        $('#' + 'editShopBtn' + shop.shno).on('click', () => {
+            showEditShopAlert(shop);
+        });
+        // 매장 삭제 버튼 이벤트 리스너
+        $('#' + 'delShopBtn' + shop.shno).on('click', () => {
+            showRemoveShopAlert(shop);
+        });
+        // 매장 선택 이벤트 리스너
+        $("#shoptable tr").on('click', (event) => {
+            changeShopBg(event.currentTarget);
 
-    $(".delShopBtn").on('click', (event) => {
-        removeShop(event.target.id);
-    });
-
-    // 매장 선택 이벤트 리스너
-    $("#shoptable tr").on('click', (event) => {
-        if (currentShop !== event.currentTarget) {
-            currentShop = event.currentTarget;
-            changeShopBg(event);
-            printStockList();
-        }
+            // 재고 등록 버튼 이벤트 리스너
+            $("#regStockBtn").on('click', () => {
+                regidateStock(shop.shno);
+                initInputStock();
+            });
+        });
     });
 }
 
-// 선택한 매장 tr 배경색 변경
-const changeShopBg = (event) => {
-    $("#shoptable tr").css("background-color", "white");
-    $(event.currentTarget).css("background-color", '#ededed');
-}
+// 매장 등록
+const regidateShop = () => {
+    const shopList = getShopList();
+    shopList.push(new Shop(getShopSeq(1), $("#shname").val(), 0));
+    setShopList(shopList);
+    printShopList();
+};
 
 // 매장 입력칸 초기화
 const initInputShop = () => {
     $("#shname").val('');
 }
 
-// 매장 등록
-const regidateShop = () => {
-    const shopList = getShopList();
-    shopList.push(new Shop(getNextShopSeq(), $("#shname").val(), 0));
-    localStorage.setItem("shopList", JSON.stringify(shopList));
-    printShopList();
-};
-
 // 매장 수정 알림창
-const showEditShopAlert = (event) => {
-    const recentTr = event.closest('th').closest('tr');
-    const shname = $(recentTr.cells[1]).html();
-
+const showEditShopAlert = shop => {
     (async () => {
         const { value: newshname } = await Swal.fire({
             title: "매장정보 수정",
             input: "text",
-            inputLabel: `현재 매장명: ${shname}`,
+            inputLabel: `현재 매장명: ${shop.shname}`,
             inputPlaceholder: "매장명을 입력해주세요.",
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -151,78 +125,93 @@ const showEditShopAlert = (event) => {
                 icon: "success",
                 title: "매장명이 변경되었습니다."
             });
-            editShop(recentTr, newshname);
+            editShop(shop, newshname);
         }
     })()
 }
 // 매장 수정
-const editShop = (tr, shname) => {
-    $(tr.cells[1]).html(shname);
-    const trno = Number($(tr.cells[0]).html());
-    const shopList = getShopList();
-    const editShop = shopList.find((shop) => shop.shno === trno);
-    editShop.shname = shname;
-    localStorage.setItem("shopList", JSON.stringify(shopList));
-}
-
-// 매장 삭제
-const removeShop = (id) => {
-    const shopList = getShopList();
-    const btnshno = parseInt(id.split('delShopBtn')[1]);
-    const leftShopList = shopList.filter((shop) => shop.shno !== btnshno);
-    leftShopList.slice(btnshno - 1).forEach(shop => {
-        shop.shno -= 1;
-    })
-    localStorage.setItem("shopList", JSON.stringify(leftShopList));
-    removeAllStock();
-    getDelShopSeq();
+const editShop = (editshop, newshname) => {
+    const editShopList = getShopList().map(shop => {
+        if (shop.shno === editshop.shno) {
+            shop.shname = newshname;
+            return shop;
+        } else {
+            return shop;
+        }
+    });
+    setShopList(editShopList);
     printShopList();
 }
 
-// 전체 재고 목록
+// 매장 삭제 알림창
+const showRemoveShopAlert = shop => {
+    Swal.fire({
+        title: "정말로 삭제하시겠습니까?",
+        text: `삭제할 매장 : ${shop.shname}`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "확인",
+        calcelButtonText: "취소"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: "삭제되었습니다!",
+                icon: "success"
+            });
+            removeShop(shop.shno);
+        }
+    });
+}
+
+// 매장 삭제
+const removeShop = shno => {
+    const leftShopList = getShopList().filter(shop => shop.shno !== shno);
+    leftShopList.slice(shno - 1).forEach(shop => {
+        shop.shno -= 1;
+    })
+    setShopList(leftShopList);
+    getShopSeq(-1);
+    // removeAllStock();
+    printShopList();
+}
+
+// 선택한 매장 tr 배경색 변경
+const changeShopBg = (tr) => {
+    $("#shoptable tr").css("background-color", "white");
+    $(tr).css("background-color", '#ededed');
+}
+
+// 재고 목록 리스트 반환
 const getStockList = () => {
     return JSON.parse(localStorage.getItem("stockList"));
 }
 
-// 선택한 재고 목록
-const getSelectStockList = () => {
-    const stockList = JSON.parse(localStorage.getItem("stockList"));
-    return stockList.filter((stock) => stock.shno === Number($(currentShop.cells[0]).html()));
-}
-
-// 재고 번호 등록
-const getNextStockSeq = () => {
-    const nextStockSeq = Number(localStorage.getItem("stockSeq")) + 1;
-    localStorage.setItem("stockSeq", nextStockSeq);
-    return nextStockSeq;
-}
-
-// 재고 번호 감소
-const getDelStockSeq = (event) => {
-    let delStockSeq;
-    if (event > 0) {
-        delStockSeq = Number(localStorage.getItem("stockSeq")) - event;
-    } else {
-        delStockSeq = Number(localStorage.getItem("stockSeq")) - 1;
-    }
-    localStorage.setItem("stockSeq", delStockSeq);
-    return delStockSeq;
-}
-
-// 재고 등록
-const regidateStock = (currentShop) => {
-    const stockList = getStockList();
-    stockList.push(new Stock(getNextStockSeq(), $("#stname").val(), Number($("#stamt").val()), $("#stindate").val(), Number($(currentShop.cells[0]).html())));
+// 재고 목록 리스트 설정
+const setStockList = (stockList) => {
     localStorage.setItem("stockList", JSON.stringify(stockList));
-    printStockList();
-    changeStockQuantity();
+}
+
+// // 선택한 재고 목록
+// const getSelectStockList = () => {
+//     const stockList = JSON.parse(localStorage.getItem("stockList"));
+//     return stockList.filter((stock) => stock.shno === Number($(currentShop.cells[0]).html()));
+// }
+
+// 재고 번호 등록 및 반환
+const getStockSeq = (seq) => {
+    const stockSeq = Number(localStorage.getItem("stockSeq")) + seq;
+    localStorage.setItem("stockSeq", stockSeq);
+    return stockSeq;
 }
 
 // 재고 출력
-const printStockList = () => {
+const printStockList = shno => {
     $("#stocktable").empty();
     let index = 0;
-    getSelectStockList().forEach(stock => {
+    const stockList = getStockList().filter(stock => stock.shno === shno);
+    stockList.forEach(stock => {
         $("#stocktable").append(`
         <tr>
             <th scope="row">${++index}</th>
@@ -246,15 +235,25 @@ const printStockList = () => {
     });
 }
 
+// 메모의 등록 시간 출력형식 지정함수
+function getDateStr(time) {
+    return moment(time).format("YYYY/MM/DD HH:mm");
+}
+
+// 재고 등록
+const regidateStock = shno => {
+    const stockList = getStockList();
+    stockList.push(new Stock(getStockSeq(1), $("#stname").val(), Number($("#stamt").val()), $("#stindate").val(), shno));
+    console.log(stockList);
+    // setStockList(stockList);
+    // printStockList(shno);
+    // changeStockQuantity();
+}
+
 // 재고 입력칸 초기화
 const initInputStock = () => {
     $("#stname").val('');
     $("#stamt").val('');
-}
-
-// 메모의 등록 시간 출력형식 지정함수
-function getDateStr(time) {
-    return moment(time).format("YYYY/MM/DD HH:mm");
 }
 
 // 재고 정보 수정 알림창
