@@ -92,11 +92,9 @@ button:hover {
     background-color: #39393990;
 }
 
-/*
-.table-hover tbody tr:hover {
-    background-color: #f1f3f5;
+.table {
+    --bs-table-bg: transparent;
 }
-*/
 
 .table thead th {
     background-color: #f8f9fa;
