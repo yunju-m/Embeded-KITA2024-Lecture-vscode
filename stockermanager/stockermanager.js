@@ -1,5 +1,3 @@
-let currentShop = '';
-
 $(() => {
     initLocalStorage();
     printShopList();
@@ -47,12 +45,12 @@ const getShopList = () => {
 };
 
 // 매장 목록 리스트 설정
-const setShopList = (shopList) => {
+const setShopList = shopList => {
     localStorage.setItem("shopList", JSON.stringify(shopList));
 }
 
 // 매장 번호 등록 및 반환
-const getShopSeq = (seq) => {
+const getShopSeq = seq => {
     const shopSeq = Number(localStorage.getItem("shopSeq")) + seq;
     localStorage.setItem("shopSeq", shopSeq);
     return shopSeq;
@@ -190,12 +188,12 @@ const getStockList = () => {
 }
 
 // 재고 목록 리스트 설정
-const setStockList = (stockList) => {
+const setStockList = stockList => {
     localStorage.setItem("stockList", JSON.stringify(stockList));
 }
 
 // 재고 번호 등록 및 반환
-const getStockSeq = (seq) => {
+const getStockSeq = seq => {
     const stockSeq = Number(localStorage.getItem("stockSeq")) + seq;
     localStorage.setItem("stockSeq", stockSeq);
     return stockSeq;
