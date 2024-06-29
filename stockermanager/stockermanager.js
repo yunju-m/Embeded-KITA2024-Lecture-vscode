@@ -180,7 +180,7 @@ const removeShop = shno => {
     })
     setShopList(leftShopList);
     getShopSeq(-1);
-    // removeAllStock();
+    removeAllStock(shno);
     printShopList();
 }
 
@@ -226,7 +226,7 @@ const printStockList = shno => {
 
         // 재고 삭제 버튼 이벤트 리스너
         $("#delStockBtn" + stock.stno).on('click', () => {
-            removeStock(stock.stno);
+            showRemoveStockAlert(stock);
         });
     });
 }
@@ -256,11 +256,34 @@ const changeStockQuantity = shno => {
 
 // 재고 등록
 const regidateStock = shno => {
-    const stockList = getStockList();
-    stockList.push(new Stock(getStockSeq(1), $("#stname").val(), Number($("#stamt").val()), $("#stindate").val(), shno));
-    setStockList(stockList);
-    printStockList(shno);
-    changeStockQuantity(shno);
+    if (!shno) {
+        showSelectShopAlert();
+    } else {
+        const stockList = getStockList();
+        stockList.push(new Stock(getStockSeq(1), $("#stname").val(), Number($("#stamt").val()), $("#stindate").val(), shno));
+        setStockList(stockList);
+        printStockList(shno);
+        changeStockQuantity(shno);
+    }
+}
+
+// 매장 선택 알림창
+const showSelectShopAlert = () => {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+    Toast.fire({
+        icon: "warning",
+        title: "매장을 선택해주세요!"
+    });
 }
 
 // 재고 입력칸 초기화
@@ -270,7 +293,7 @@ const initInputStock = () => {
 }
 
 // 재고 정보 수정 알림창
-const showEditStockAlert = (stock) => {
+const showEditStockAlert = stock => {
     (async () => {
         const { value: formValues } = await Swal.fire({
             title: "재고 정보 수정",
@@ -315,38 +338,66 @@ const showEditStockAlert = (stock) => {
 }
 
 // 재고 수정
-const editStock = (stock, formValues) => {
-    const trno = Number($(event.cells[5].childNodes)[0].id.split('Btn')[1]);
-    const stockList = getStockList();
-    const editStock = stockList.find((stock) => stock.stno === trno);
-    editStock.stname = formValues[0];
-    editStock.stamt = Number(formValues[1]);
-    editStock.stindate = formValues[2];
-    localStorage.setItem("stockList", JSON.stringify(stockList));
-    changeStockQuantity();
+const editStock = (editstock, formValues) => {
+    const stockList = getStockList().filter(stock => stock.shno === editstock.shno);
+    const editStockList = stockList.map(stock => {
+        if (stock.stno === editstock.stno) {
+            stock.stname = formValues[0];
+            stock.stamt = Number(formValues[1]);
+            stock.stindate = formValues[2];
+            return stock;
+        } else {
+            return stock;
+        }
+    });
+    const localStockList = getStockList().filter(stock => stock.shno !== editstock.shno);
+    const updateStockList = [...localStockList, ...editStockList];
+    setStockList(updateStockList);
+    changeStockQuantity(editstock.shno);
+    printStockList(editstock.shno);
+}
+
+// 매장 삭제 알림창
+const showRemoveStockAlert = stock => {
+    Swal.fire({
+        title: "정말로 삭제하시겠습니까?",
+        text: `삭제할 재고 : ${stock.stname}`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "확인",
+        cancelButtonText: "취소"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: "삭제되었습니다!",
+                icon: "success"
+            });
+            removeStock(stock);
+        }
+    });
+}
+
+// 재고 삭제
+const removeStock = editstock => {
+    const stockList = getStockList().filter(stock => stock.stno !== editstock.stno);
+    stockList.slice(editstock.stno - 1).forEach(stock => {
+        stock.stno -= 1;
+    });
+    setStockList(stockList);
+    changeStockQuantity(editstock.shno);
+    getStockSeq(-1);
     printStockList();
 }
 
 // 모든 재고 삭제
-const removeAllStock = () => {
-    const stockList = getStockList();
-    const delStockCnt = getSelectStockList().length;
-    getDelStockSeq(delStockCnt);
-    const leftStockList = stockList.filter((stock) => stock.shno !== Number($(currentShop.cells[0]).html()));
-    localStorage.setItem("stockList", JSON.stringify(leftStockList));
-    printStockList();
-}
-
-// 재고 삭제
-const removeStock = (id) => {
-    const btnstno = parseInt(id.split('delStockBtn')[1]);
-    const leftStockList = getStockList().filter((stock) => stock.stno !== btnstno);
-    leftStockList.slice(btnstno - 1).forEach(stock => {
-        stock.stno -= 1;
-    });
-    localStorage.setItem("stockList", JSON.stringify(leftStockList));
-    changeStockQuantity();
-    printStockList();
-    getDelStockSeq();
+const removeAllStock = shno => {
+    const stockList = getStockList().filter(stock => stock.shno === shno);
+    const stockListLeng = stockList.length;
+    const leftStockList = getStockList().filter(stock => stock.shno !== shno);
+    getStockSeq(-stockListLeng);
+    setStockList(leftStockList);
+    printStockList(shno);
 }
 
