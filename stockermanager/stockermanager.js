@@ -82,26 +82,14 @@ const printShopList = () => {
         });
         // 매장 삭제 버튼 이벤트 리스너
         $('#' + 'delShopBtn' + shop.shno).on('click', () => {
-            showRemoveShopAlert(shop);
+            // showRemoveShopAlert(shop);
+            showRemoveAlert(shop, 'shop');
         });
     });
 }
 
-// 매장 등록
-const regidateShop = () => {
-    const shname = $("#shname").val();
-    if (!shname) {
-        showInputShopAlert();
-    } else {
-        const shopList = getShopList();
-        shopList.push(new Shop(getShopSeq(1), $("#shname").val(), 0));
-        setShopList(shopList);
-        printShopList();
-    }
-};
-
-// 매장 입력 알림창
-const showInputShopAlert = () => {
+// 매장 입력, 선택 알림창
+const showRequiredAlert = content => {
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -115,9 +103,65 @@ const showInputShopAlert = () => {
     });
     Toast.fire({
         icon: "warning",
-        title: "매장을 입력해주세요!"
+        title: content
     });
 }
+
+// 매장 삭제 알림창
+const showRemoveAlert = (target, targetStr) => {
+    const [name, text, returnFunc] = targetStr === 'shop' ? [target.shname, '매장', removeShop] : [target.stname, '재고', removeStock];
+
+    Swal.fire({
+        title: "정말로 삭제하시겠습니까?",
+        text: `삭제할 ${text} : ${name}`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "확인",
+        cancelButtonText: "취소"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: "삭제되었습니다!",
+                icon: "success"
+            });
+            returnFunc(target);
+        }
+    });
+}
+
+// 매장, 재고 변경사항 확인 안내창
+const showConfirmAlert = test => {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+    Toast.fire({
+        icon: "success",
+        title: test
+    });
+}
+
+// 매장 등록
+const regidateShop = () => {
+    const shname = $("#shname").val();
+    if (!shname) {
+        showRequiredAlert("매장을 입력해주세요!");
+    } else {
+        const shopList = getShopList();
+        shopList.push(new Shop(getShopSeq(1), shname, 0));
+        setShopList(shopList);
+        printShopList();
+    }
+};
 
 // 매장 입력칸 초기화
 const initInputShop = () => {
@@ -139,21 +183,7 @@ const showEditShopAlert = shop => {
             cancelButtonText: '취소',
         });
         if (newshname) {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-            Toast.fire({
-                icon: "success",
-                title: "매장명이 변경되었습니다."
-            });
+            showConfirmAlert("매장명이 변경되었습니다.");
             editShop(shop, newshname);
         }
     })()
@@ -172,37 +202,15 @@ const editShop = (editshop, newshname) => {
     printShopList();
 }
 
-// 매장 삭제 알림창
-const showRemoveShopAlert = shop => {
-    Swal.fire({
-        title: "정말로 삭제하시겠습니까?",
-        text: `삭제할 매장 : ${shop.shname}`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "확인",
-        cancelButtonText: "취소"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: "삭제되었습니다!",
-                icon: "success"
-            });
-            removeShop(shop.shno);
-        }
-    });
-}
-
 // 매장 삭제
-const removeShop = shno => {
-    const leftShopList = getShopList().filter(shop => shop.shno !== shno);
-    leftShopList.slice(shno - 1).forEach(shop => {
+const removeShop = editstock => {
+    const leftShopList = getShopList().filter(shop => shop.shno !== editstock.shno);
+    leftShopList.slice(editstock.shno - 1).forEach(shop => {
         shop.shno -= 1;
     });
     setShopList(leftShopList);
     getShopSeq(-1);
-    removeAllStock(shno);
+    removeAllStock(editstock.shno);
     printShopList();
 }
 
@@ -256,7 +264,8 @@ const printStockList = shno => {
 
         // 재고 삭제 버튼 이벤트 리스너
         $("#delStockBtn" + stock.stno).on('click', () => {
-            showRemoveStockAlert(stock);
+            // showRemoveStockAlert(stock);
+            showRemoveAlert(stock, 'stock');
         });
     });
 }
@@ -287,7 +296,7 @@ const changeStockQuantity = shno => {
 // 재고 등록
 const regidateStock = shno => {
     if (!shno) {
-        showSelectShopAlert();
+        showRequiredAlert("매장을 선택해주세요!");
     } else {
         const stockList = getStockList();
         stockList.push(new Stock(getStockSeq(1), $("#stname").val(), Number($("#stamt").val()), $("#stindate").val(), shno));
@@ -295,25 +304,6 @@ const regidateStock = shno => {
         printStockList(shno);
         changeStockQuantity(shno);
     }
-}
-
-// 매장 선택 알림창
-const showSelectShopAlert = () => {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        }
-    });
-    Toast.fire({
-        icon: "warning",
-        title: "매장을 선택해주세요!"
-    });
 }
 
 // 재고 입력칸 초기화
@@ -347,21 +337,7 @@ const showEditStockAlert = stock => {
         });
         if (formValues) {
             Swal.fire(JSON.stringify(formValues));
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-            Toast.fire({
-                icon: "success",
-                title: "재고정보가 변경되었습니다."
-            });
+            showConfirmAlert("재고정보가 변경되었습니다.");
             editStock(stock, formValues);
         }
     })()
@@ -385,28 +361,6 @@ const editStock = (editstock, formValues) => {
     setStockList(updateStockList);
     changeStockQuantity(editstock.shno);
     printStockList(editstock.shno);
-}
-
-// 매장 삭제 알림창
-const showRemoveStockAlert = stock => {
-    Swal.fire({
-        title: "정말로 삭제하시겠습니까?",
-        text: `삭제할 재고 : ${stock.stname}`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "확인",
-        cancelButtonText: "취소"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: "삭제되었습니다!",
-                icon: "success"
-            });
-            removeStock(stock);
-        }
-    });
 }
 
 // 재고 삭제
