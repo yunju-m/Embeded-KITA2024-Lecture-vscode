@@ -82,7 +82,6 @@ const printShopList = () => {
         });
         // 매장 삭제 버튼 이벤트 리스너
         $('#' + 'delShopBtn' + shop.shno).on('click', () => {
-            // showRemoveShopAlert(shop);
             showRemoveAlert(shop, 'shop');
         });
     });
@@ -295,11 +294,14 @@ const changeStockQuantity = shno => {
 
 // 재고 등록
 const regidateStock = shno => {
+    const stname = $("#stname").val();
     if (!shno) {
         showRequiredAlert("매장을 선택해주세요!");
+    } else if (!stname) {
+        showRequiredAlert("재고명을 입력해주세요!");
     } else {
         const stockList = getStockList();
-        stockList.push(new Stock(getStockSeq(1), $("#stname").val(), Number($("#stamt").val()), $("#stindate").val(), shno));
+        stockList.push(new Stock(getStockSeq(1), stname, Number($("#stamt").val()), $("#stindate").val(), shno));
         setStockList(stockList);
         printStockList(shno);
         changeStockQuantity(shno);
