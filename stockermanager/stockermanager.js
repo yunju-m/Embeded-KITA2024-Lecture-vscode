@@ -175,7 +175,7 @@ const removeShop = shno => {
     const leftShopList = getShopList().filter(shop => shop.shno !== shno);
     leftShopList.slice(shno - 1).forEach(shop => {
         shop.shno -= 1;
-    })
+    });
     setShopList(leftShopList);
     getShopSeq(-1);
     removeAllStock(shno);
@@ -394,6 +394,9 @@ const removeAllStock = shno => {
     const stockList = getStockList().filter(stock => stock.shno === shno);
     const stockListLeng = stockList.length;
     const leftStockList = getStockList().filter(stock => stock.shno !== shno);
+    leftStockList.slice(shno - 1).forEach(stock => {
+        stock.shno -= 1;
+    });
     getStockSeq(-stockListLeng);
     setStockList(leftStockList);
     printStockList(shno);
