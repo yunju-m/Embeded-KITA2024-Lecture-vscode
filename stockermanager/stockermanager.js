@@ -213,7 +213,15 @@ const getStockList = () => {
 
 // 재고 목록 리스트 설정
 const setStockList = stockList => {
+    sortStockList(stockList);
     localStorage.setItem("stockList", JSON.stringify(stockList));
+}
+
+// 매장별 재고 정렬
+const sortStockList = stockList => {
+    stockList.sort((a, b) => {
+        return a.shno - b.shno;
+    });
 }
 
 // 재고 번호 등록 및 반환
