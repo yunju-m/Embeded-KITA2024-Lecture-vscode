@@ -393,12 +393,15 @@ const removeStock = editstock => {
 const removeAllStock = shno => {
     const stockList = getStockList().filter(stock => stock.shno === shno);
     const stockListLeng = stockList.length;
-    const leftStockList = getStockList().filter(stock => stock.shno !== shno);
-    leftStockList.slice(shno - 1).forEach(stock => {
+    const keepStockList = getStockList().filter(stock => stock.shno < shno);
+    const changeStockList = getStockList().filter(stock => stock.shno > shno);
+    changeStockList.slice().forEach(stock => {
         stock.shno -= 1;
+        stock.stno -= stockListLeng;
     });
+    const updateStockList = [...keepStockList, ...changeStockList];
     getStockSeq(-stockListLeng);
-    setStockList(leftStockList);
+    setStockList(updateStockList);
     printStockList(shno);
 }
 
