@@ -89,11 +89,35 @@ const printShopList = () => {
 
 // 매장 등록
 const regidateShop = () => {
-    const shopList = getShopList();
-    shopList.push(new Shop(getShopSeq(1), $("#shname").val(), 0));
-    setShopList(shopList);
-    printShopList();
+    const shname = $("#shname").val();
+    if (!shname) {
+        showInputShopAlert();
+    } else {
+        const shopList = getShopList();
+        shopList.push(new Shop(getShopSeq(1), $("#shname").val(), 0));
+        setShopList(shopList);
+        printShopList();
+    }
 };
+
+// 매장 입력 알림창
+const showInputShopAlert = () => {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+    Toast.fire({
+        icon: "warning",
+        title: "매장을 입력해주세요!"
+    });
+}
 
 // 매장 입력칸 초기화
 const initInputShop = () => {
