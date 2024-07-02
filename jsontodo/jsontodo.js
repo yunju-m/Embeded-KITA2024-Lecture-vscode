@@ -34,11 +34,20 @@ const printTodoList = todoList => {
         li = document.createElement('li');
         li.innerHTML = `<button id=delBtn${todo.id}>X</button>&nbsp;`;
         li.innerHTML += `<input type ="checkbox" id ="todoCheck${todo.id}" />&nbsp;`;
-        li.innerHTML += todo.tdcontent;
+        li.innerHTML += `<p>${todo.tdcontent}</p>`;
         ol.appendChild(li);
 
         $("#todoList").append(ul);
         $("#todoList").append(ol);
+
+        // todo 체크박스 이벤트 리스너
+        $("#todoCheck" + todo.id).on("click", checkbox => {
+            if (checkbox.target.checked) {
+                $("p").css('text-decoration', 'line-through');
+            } else {
+                $("p").css('text-decoration', '');
+            }
+        });
 
         // todo 리스트 삭제 이벤트 리스너
         $("#delBtn" + todo.id).on("click", () => {

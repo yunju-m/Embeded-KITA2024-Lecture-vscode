@@ -36,3 +36,7 @@ input[type="text"] {
 .todoList-contaienr {
     height: 550px;
 }
+
+li {
+    display: inline-flex;
+}
