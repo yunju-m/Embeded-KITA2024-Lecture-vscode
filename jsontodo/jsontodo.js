@@ -1,3 +1,4 @@
+let seq = 1;
 const requestTodo = (method, url, payload) => {
     const xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
@@ -17,7 +18,7 @@ requestTodo("GET", "http://localhost:3000/todos");
 
 // todo 리스트 등록 이벤트 리스너
 $("#registBtn").on("click", () => {
-    const newTodo = new Todo(1, $("#registContent").val());
+    const newTodo = new Todo($("#registContent").val());
     requestTodo("POST", "http://localhost:3000/todos", JSON.stringify(newTodo));
 });
 
@@ -31,13 +32,18 @@ const printTodoList = todoList => {
 
         let ol = document.createElement('ol');
         li = document.createElement('li');
-        li.innerHTML = `<button id=delBtn${todo.tdno}>X</button>&nbsp;`;
-        li.innerHTML += `<input type = "checkbox" id ="todoCheck${todo.tdno}" />&nbsp;`;
+        li.innerHTML = `<button id=delBtn${todo.id}>X</button>&nbsp;`;
+        li.innerHTML += `<input type ="checkbox" id ="todoCheck${todo.id}" />&nbsp;`;
         li.innerHTML += todo.tdcontent;
         ol.appendChild(li);
 
         $("#todoList").append(ul);
         $("#todoList").append(ol);
+
+        // todo 리스트 삭제 이벤트 리스너
+        $("#delBtn" + todo.id).on("click", () => {
+            requestTodo("DELETE", `http://localhost:3000/todos/${todo.id}`);
+        });
     });
 }
 
