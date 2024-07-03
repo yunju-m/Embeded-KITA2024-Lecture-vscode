@@ -13,7 +13,7 @@ body {
 }
 
 .todo-container {
-    height: 700px;
+    height: 710px;
     background-color: #ddd;
 }
 
@@ -21,12 +21,19 @@ h1,
 h3 {
     text-align: center;
     font-weight: bold;
+    padding-top: 10px;
 }
 
 .input-container,
 .search-container {
     text-align: center;
     margin-bottom: 10px;
+}
+
+.search-container,
+.regist-container {
+    display: flex;
+    justify-content: space-around;
 }
 
 input[type="text"] {
@@ -37,6 +44,39 @@ input[type="text"] {
     height: 550px;
 }
 
+.todoListul {
+    height: 480px;
+    padding: 10px;
+    margin: 10px;
+    background-color: white;
+    overflow-y: auto;
+}
+
+#todoList {
+    padding: 0;
+}
+
+#todoList>ul {
+    list-style-type: none;
+    padding-left: 25px;
+}
+
+ol {
+    margin-bottom: 5px !important;
+    padding-left: 40px;
+}
+
 li {
-    display: inline-flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.li-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+input[type="checkbox"] {
+    margin-top: 10px;
 }

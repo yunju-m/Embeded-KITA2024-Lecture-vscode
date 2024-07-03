@@ -20,17 +20,21 @@
             <h1>Todo</h1>
             <div class="input-container">
                 <div class="search-container">
-                    <input id="searchContent" type="text" placeholder="검색할 내용을 입력하세요." />
-                    <button id="searchBtn" class="btn btn-outline-dark">검색</button>
+                    <input id="searchContent" class="form-control" type="text" placeholder="검색할 내용을 입력하세요." />
+                    <button id="searchBtn" class="btn btn-dark">검색</button>
                 </div>
                 <div class="regist-container">
-                    <input id="registContent" type="text" placeholder="등록할 내용을 입력하세요." />
-                    <button id="registBtn" class="btn btn-outline-dark">등록</button>
+                    <input id="registContent" class="form-control" type="text" placeholder="등록할 내용을 입력하세요." />
+                    <button id="registBtn" class="btn btn-dark">등록</button>
                 </div>
             </div>
             <div class="todoList-container">
-                <h3>::할일 목록::</h3>
-                <ul id="todoList"></ul>
+                <h3>::할일 목록&#128221;::</h3>
+                <div class="todoListul">
+                    <ul>
+                        <ol id="todoList"></ol>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
