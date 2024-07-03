@@ -23,6 +23,13 @@ const getTodoList = () => {
         .catch(err => console.error(err));
 };
 
+// todo 리스트 검색 이벤트 리스너
+$("#searchBtn").on("click", () => {
+    const searchTodo = $("#searchContent").val();
+    requestTodo("GET", "http://localhost:3000/todos")
+        .then(res => printTodoList(res.filter(todo => todo.tdcontent.includes(searchTodo))));
+});
+
 // todo 리스트 등록 이벤트 리스너
 $("#registBtn").on("click", () => {
     const newTodo = new Todo($("#registContent").val());
